@@ -1,7 +1,6 @@
 # Gallery App React Native
 
-![Gallery App](gallery_app_screenshot.png)
-
+ 
 This is a simple gallery app developed in React Native. The app allows users to view images fetched from an API and manage the state using Redux Toolkit.
 
 ## Features
