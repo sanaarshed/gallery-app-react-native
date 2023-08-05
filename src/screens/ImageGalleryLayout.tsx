@@ -1,52 +1,34 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Dimensions,
-  StyleSheet,
-  ScrollView,
-  FlatList,
-  Image,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Button,
-} from 'react-native';
-import {getImagesPending, handleLike} from '../redux/slices/gallerySlice';
-import {useDispatch, useSelector, useStore} from 'react-redux';
-import HearIcon from '../assets/Heart';
-import {SvgXml} from 'react-native-svg';
-import ImageCard from './ImageCard';
-
-export type MasonryItemProps = {
-  title: string;
-  height: number;
-  width: number;
-};
-
-export type ImageGalleryLayoutProps = {
-  data: MasonryItemProps[];
-};
-
-const spacing = 8;
+import {View, StyleSheet, FlatList, Text, Button} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import ImageCard from '../components/ImageCard';
+import {getImagesPending} from '../redux/slices/gallerySlice';
 
 const ImageGalleryLayout: React.FC<ImageGalleryLayoutProps> = () => {
   const dispatch = useDispatch();
-  const [limit, setLimit] = useState(0);
-  const [count, setCount] = useState(0);
-  const {images, isLoading, error, likedImages} = useSelector(
-    state => state.gallery,
-  );
 
+  // State to manage the number of images to display
+  const [limit, setLimit] = useState(0);
+
+  // State to keep track of the number of liked images
+  const [count, setCount] = useState(0);
+
+  // Retrieve states from the Redux store
+  const {images, isLoading, likedImages} = useSelector(state => state.gallery);
+
+  //  Handles the action to fetch more images
   const handleGetImages = () => {
     const increase = limit + 10;
     setLimit(increase);
     dispatch(getImagesPending(increase));
   };
 
+  // Fetch images on  mount
   useEffect(() => {
     handleGetImages();
   }, []);
 
+  // Update the count state when the list of liked images changes
   useEffect(() => {
     if (likedImages?.length) {
       let c = likedImages.filter(item => item !== undefined);
@@ -54,6 +36,7 @@ const ImageGalleryLayout: React.FC<ImageGalleryLayoutProps> = () => {
     }
   }, [likedImages]);
 
+  //  Renders the header of the gallery, displaying the title and the count of liked images.
   const renderHeader = () => {
     return (
       <View style={styles.header}>
@@ -67,6 +50,8 @@ const ImageGalleryLayout: React.FC<ImageGalleryLayoutProps> = () => {
       </View>
     );
   };
+
+  //  Renders individual image cards in the gallery.
 
   const renderItems = ({item, index}) => {
     const {url, title} = item;

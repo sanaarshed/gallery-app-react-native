@@ -3,9 +3,9 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 
-import ImageGalleryLayout from './src/components/ImageGalleryLayout';
+import ImageGalleryLayout from './src/screens/ImageGalleryLayout';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import ListingScreen from './src/components/ListingScreen';
+import ListingScreen from './src/screens/ListingScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Stack = createNativeStackNavigator();

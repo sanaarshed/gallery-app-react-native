@@ -1,34 +1,20 @@
-import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Dimensions,
-  StyleSheet,
-  ScrollView,
-  FlatList,
-  Image,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Button,
-} from 'react-native';
-import {getImagesPending, handleLike} from '../redux/slices/gallerySlice';
-import {useDispatch, useSelector, useStore} from 'react-redux';
-import HearIcon from '../assets/Heart';
-import {SvgXml} from 'react-native-svg';
-import ImageCard from './ImageCard';
+import React from 'react';
+import {View, StyleSheet, FlatList, Image, Text} from 'react-native';
+import {useSelector} from 'react-redux';
 
 const ListingScreen = () => {
-  const dispatch = useDispatch();
   const {likedImages} = useSelector(state => state.gallery);
 
+  //  to render the header of the liked images list
   const renderHeader = () => {
     return (
       <View style={styles.header}>
-        <Text style={styles.headerText}>Favourities List</Text>
+        <Text style={styles.headerText}>Favourites List</Text>
       </View>
     );
   };
 
+  //  to render each item (liked image) in the list
   const renderItems = ({item, index}) => {
     return (
       <View key={index} style={styles.itemCard}>
@@ -42,6 +28,8 @@ const ListingScreen = () => {
       </View>
     );
   };
+
+  //  to render a message when there are no liked images to display
   const renderEmptyList = () => {
     return (
       <View style={styles.empty}>
@@ -50,11 +38,11 @@ const ListingScreen = () => {
     );
   };
 
+  // Render the main component view
   return (
     <View style={styles.container}>
       <FlatList
         ListHeaderComponent={renderHeader}
-        // data={[{name: '1'}, {name: '2'}, {name: '3'}]}
         data={likedImages}
         renderItem={renderItems}
         keyExtractor={(_, index) => index + ''}
@@ -65,6 +53,7 @@ const ListingScreen = () => {
   );
 };
 
+//for styling
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -79,7 +68,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 30,
   },
-
   empty: {
     flex: 1,
     justifyContent: 'center',
