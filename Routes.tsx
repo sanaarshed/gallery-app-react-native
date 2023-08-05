@@ -12,6 +12,7 @@ const Stack = createNativeStackNavigator();
 
 const BottomTab = createBottomTabNavigator();
 
+// defining bottom tabs using react native bottom navigation
 const BottomTabStack = () => (
   <BottomTab.Navigator
     screenOptions={{
@@ -28,6 +29,7 @@ const BottomTabStack = () => (
   </BottomTab.Navigator>
 );
 
+// defining staack navgation for navigating
 function Routes(): JSX.Element {
   return (
     <NavigationContainer>

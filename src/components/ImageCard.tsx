@@ -10,15 +10,15 @@ export type ImageCardProps = {
   name: string;
 };
 
-const ImageCard: React.FC<ImageCardProps> = ({
-  image,
-  id,
-  name,
-}: ImageCardProps) => {
+const ImageCard = (props: ImageCardProps) => {
+  const {image, id, name} = props;
   const dispatch = useDispatch();
   const {likedImages} = useSelector(state => state.gallery);
+
+  //checking if the item is selected
   const selected = likedImages.some(item => item?.id === id);
 
+  // rendering card in a seperate component
   return (
     <View style={[styles.cardContainer]}>
       <Image
