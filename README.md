@@ -1,2 +1,6 @@
-# gallery-app-react-native
-the gallery app developed in react native. fetching images from api and managing state using redux toolkit. the user can heart an image and that image added to the listings handled by reducer. also showing the number of imges being selected
+gallery-app-react-native
+This is a gallery app developed in React Native. The app includes the following features:
+
+Fetching images from an API and managing state using Redux Toolkit.
+Users can heart (like) an image, and the app handles adding the liked image to the listing managed by the reducer.
+The app displays the number of images that have been selected (liked).
