@@ -7,10 +7,22 @@ import ImageGalleryLayout from './src/screens/ImageGalleryLayout';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ListingScreen from './src/screens/ListingScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {Text} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
 const BottomTab = createBottomTabNavigator();
+
+const Label = ({text}) => (
+  <Text style={{fontSize: 18, fontWeight: '600'}}>{text}</Text>
+);
+
+const getOptions = title => ({
+  options: () => ({
+    tabBarIcon: () => null,
+    tabBarLabel: () => <Label text={title} />,
+  }),
+});
 
 // defining bottom tabs using react native bottom navigation
 const BottomTabStack = () => (
@@ -21,11 +33,13 @@ const BottomTabStack = () => (
     <BottomTab.Screen
       name="Gallery"
       component={ImageGalleryLayout}
-      options={() => ({
-        tabBarIcon: () => <Icon name="home" />,
-      })}
+      {...getOptions('Gallery')}
     />
-    <BottomTab.Screen name="listLayout" component={ListingScreen} />
+    <BottomTab.Screen
+      name="listLayout"
+      component={ListingScreen}
+      {...getOptions('List')}
+    />
   </BottomTab.Navigator>
 );
 
