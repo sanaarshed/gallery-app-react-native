@@ -18,7 +18,8 @@ const gallerySlice = createSlice({
     },
     getImagesFulfilled: (state, action) => {
       state.isLoading = false;
-      state.images = action.payload;
+      action?.payload?.map(item => state.images.push(item));
+      // state.images=[...state.images , ...action.payload];
     },
     getImagesRejected: (state, action) => {
       state.isLoading = false;
@@ -31,10 +32,11 @@ const gallerySlice = createSlice({
       let list = [...state.likedImages];
 
       // to check if the data is already in likedImages if not then add
+      let limit = 3;
 
       const exits = list.some(item => item?.id === id);
       if (exits) list = list.filter(item => item.id != id);
-      else {
+      else if (list?.length < limit) {
         list.push(data);
       }
 

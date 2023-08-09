@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {View, StyleSheet, FlatList, Text, Button} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import ImageCard from '../components/ImageCard';
@@ -20,7 +20,7 @@ const ImageGalleryLayout: React.FC<ImageGalleryLayoutProps> = () => {
   const handleGetImages = () => {
     const increase = limit + 10;
     setLimit(increase);
-    dispatch(getImagesPending(increase));
+    dispatch(getImagesPending({offset: increase, limit: increase}));
   };
 
   // Fetch images on  mount
@@ -30,10 +30,7 @@ const ImageGalleryLayout: React.FC<ImageGalleryLayoutProps> = () => {
 
   // Update the count state when the list of liked images changes
   useEffect(() => {
-    if (likedImages?.length) {
-      let c = likedImages.filter(item => item !== undefined);
-      setCount(c.length);
-    }
+    setCount(likedImages?.length);
   }, [likedImages]);
 
   //  Renders the header of the gallery, displaying the title and the count of liked images.
@@ -53,10 +50,20 @@ const ImageGalleryLayout: React.FC<ImageGalleryLayoutProps> = () => {
 
   //  Renders individual image cards in the gallery.
 
-  const renderItems = ({item, index}) => {
+  const renderItems = useCallback(({item, index}) => {
+    // this callback should not render for every image fetch
+    console.log('index---->', index);
+    console.log('count---->', count);
     const {url, title} = item;
-    return <ImageCard id={index} image={url} name={title} />;
-  };
+    return (
+      <ImageCard
+        id={index}
+        image={url}
+        name={title}
+        disabled={count > 3 ? true : false}
+      />
+    );
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -64,17 +71,18 @@ const ImageGalleryLayout: React.FC<ImageGalleryLayoutProps> = () => {
         ListHeaderComponent={renderHeader}
         data={images}
         renderItem={renderItems}
-        keyExtractor={(_, index) => index + ''}
+        keyExtractor={(_, index) => index.toString()}
         numColumns={2}
-        ListFooterComponent={() => (
-          <View style={styles.bottomBtn}>
-            <Button
-              onPress={() => handleGetImages()}
-              title={isLoading ? 'loading' : 'Load more'}
-              disabled={isLoading}
-            />
-          </View>
-        )}
+        onEndReached={() => handleGetImages()}
+        // ListFooterComponent={() => (
+        //   <View style={styles.bottomBtn}>
+        //     <Button
+        //       onPress={() => handleGetImages()}
+        //       title={isLoading ? 'loading' : 'Load more'}
+        //       disabled={isLoading}
+        //     />
+        //   </View>
+        // )}
       />
     </View>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import HearIcon from '../assets/Heart';
 import {handleLike} from '../redux/slices/gallerySlice';
@@ -8,16 +8,18 @@ export type ImageCardProps = {
   id: number;
   image: string;
   name: string;
+  disabled: boolean;
 };
 
 const ImageCard = (props: ImageCardProps) => {
-  const {image, id, name} = props;
+  const {image, id, name, disabled} = props;
   const dispatch = useDispatch();
-  const {likedImages} = useSelector(state => state.gallery);
+  const [selected, setSelected] = useState(false);
+  // const {likedImages} = useSelector(state => state.gallery);
 
   //checking if the item is selected
-  const selected = likedImages.some(item => item?.id === id);
-
+  // const selected = likedImages.some(item => item?.id === id);
+  // console.log('selected---->', selected);
   // rendering card in a seperate component
   return (
     <View style={[styles.cardContainer]}>
@@ -27,9 +29,12 @@ const ImageCard = (props: ImageCardProps) => {
           uri: image,
         }}
       />
+
       <View style={styles.bottom}>
         <TouchableOpacity
+          disabled={disabled}
           onPress={() => {
+            setSelected(!selected);
             const data = {id, name, image};
             dispatch(handleLike(data));
           }}>
@@ -62,4 +67,4 @@ const styles = StyleSheet.create({
   image: {flex: 1},
 });
 
-export default ImageCard;
+export default React.memo(ImageCard);

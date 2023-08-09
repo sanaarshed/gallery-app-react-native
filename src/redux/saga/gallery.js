@@ -11,7 +11,10 @@ function* fetchImages({payload}) {
   try {
     // using saga to api calls
     // i would have used axios but that would take more memory for such small task/project
-    const response = yield call(fetch, getImagesApi + payload);
+    const response = yield call(
+      fetch,
+      `https://api.slingacademy.com/v1/sample-data/photos?offset=${payload.offset}&limit=${payload.limit}`,
+    );
     if (!response.ok) {
       throw new Error('Error fetching images.');
     }
